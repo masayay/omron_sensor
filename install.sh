@@ -1,16 +1,15 @@
 #!/usr/bin/bash
-
 INSTALL_DIR=/var/lib/omron
 LOG_DIR=/var/log/omron
 
 if [ $1 = "remove" ]; then
-    rm -f /etc/udev/rules.d/80-2jcie-bu01-usb.rules
-    rm -f /etc/logrotate.d/omron
     systemctl stop omron-sensor
     systemctl disable omron-sensor
     rm -f /etc/systemd/system/omron-sensor.service
     systemctl daemon-reload
-    echo "Removed omron-sensor.service"
+    rm -f /etc/udev/rules.d/80-2jcie-bu01-usb.rules
+    rm -f /etc/logrotate.d/omron
+    echo "Successfully removed omron-sensor.service!"
     exit 0
 fi
 
@@ -33,11 +32,26 @@ gpasswd -a omron dialout  ## Require to access /dev/ttyUSBX
 # Step4: Install pkg
 cp omron_sensor.py omron_sensor_util.py ${INSTALL_DIR}
 cp config-sample.ini ${INSTALL_DIR}/config.ini
-chmod 755 ${INSTALL_DIR}/omron_sensor.py
+chmod 754 ${INSTALL_DIR}/omron_sensor.py
 chown -R omron:omron ${INSTALL_DIR} ${LOG_DIR}
 
 # Step5: Start omron-sensor.service
-cp omron-sensor.service /etc/systemd/system/omron-sensor.service
+cat<<EOF> /etc/systemd/system/omron-sensor.service
+[Unit]
+Description=Omron 2JCIE-BU USB Sensor daemon
+After=network.target
+
+[Service]
+Type=notify
+User=omron
+Group=omron
+ExecStart=${INSTALL_DIR}/omron_sensor.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 systemctl daemon-reload
 systemctl enable omron-sensor
 
@@ -59,4 +73,4 @@ cat<<EOF> /etc/logrotate.d/omron
 }
 EOF
 
-echo "Installed omron-sensor.service"
+echo "Successfully installed omron-sensor.service!"
