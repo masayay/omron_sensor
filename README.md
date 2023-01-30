@@ -16,13 +16,19 @@ reboot
 ~~~
 
 ## Usage
+### start / stop service
+~~~
+systemctl start omron-sensor
+systemctl stop omron-sensor
+~~~
+
 ### Check CSV data & log
 ~~~
 tail -f /var/lib/omron/data/`hostname`-sensor.csv
 tail -f /var/log/omron/`hostname`-sensor.log
 ~~~
 
-### CSV OUTPUT
+### CSV output sample
 ~~~
 Time measured,Temperature,Relative humidity,Ambient light,Barometric pressure,Sound noise,eTVOC,eCO2,Discomfort index,Heat stroke,Vibration information,SI value,PGA,Seismic intensity
 2023/01/30 14:55:06,24.92,34.69,572,998.887,67.68,3,420,70.08,19.1,2,152.3,1002.0,6.708
@@ -31,30 +37,26 @@ Time measured,Temperature,Relative humidity,Ambient light,Barometric pressure,So
 2023/01/30 14:55:09,24.81,34.89,756,998.876,67.2,2,415,69.97,19.03,2,152.3,1002.0,6.708
 ~~~
 
-### start / stop service
+## Connecting with Prometheus
+Exporting sensing data to prometheus server either way via prometheus-node-exporter or pushgateway. Edit "/var/lib/omron/config.ini" then restart service.
 ~~~
-systemctl start omron-sensor
-systemctl stop omron-sensor
+[PROMETHEUS]
+# prometheus-node-exporter configuration
+ENABLE_NODEEXPORTER = False
+NODE_OUTPUT_DIR = /var/lib/omron/prom/
+
+# pushgateway configuration
+ENABLE_PUSHGATEWAY = False
+PUSHGATEWAY = X.X.X.X:9091
+PUSHGATEWAY_TIMEOUT = 1
 ~~~
 
-## Connecting with Prometheus
-### prometheus-node-exporter
+### Install prometheus-node-exporter
+If using prometheus-node-exporter, need to install service and configure it.
 ~~~
 apt -y install prometheus-node-exporter
 sed -i 's/ARGS=""/ARGS="--collector.textfile.directory \/var\/lib\/omron\/prom\/"/' /etc/default/prometheus-node-exporter
 systemctl restart prometheus-node-exporter
-~~~
-
-### prometheus pushgateway
-~~~
-vi /var/log/omron/config.ini
-~~~
-
-~~~
-# pushgateway configuration
-ENABLE_PUSHGATEWAY = True
-PUSHGATEWAY = X.X.X.X:9091
-PUSHGATEWAY_TIMEOUT = 1
 ~~~
 
 ## Remove
