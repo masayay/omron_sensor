@@ -1,7 +1,6 @@
-# OMRON 2JCIE-BU Systemd Service
+# OMRON 2JCIE-BU sensing data to Prometheus
 * Reading sensing data from serial communication (USB port) and writing data on csv file.
 * Export sensing data to prometheus-node-exporter/pushgateway.
-* Register as systemd service
 
 ## Install
 ~~~
@@ -50,6 +49,9 @@ ENABLE_PUSHGATEWAY = False
 PUSHGATEWAY = X.X.X.X:9091
 PUSHGATEWAY_TIMEOUT = 1
 ~~~
+
+### Sample
+![sample01](https://user-images.githubusercontent.com/92005636/215615971-e08053c2-23bc-405f-a6b3-5746d306e678.jpg)
 
 ### Install prometheus-node-exporter
 If using prometheus-node-exporter, need to install service and configure it.
