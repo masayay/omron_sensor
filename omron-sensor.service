@@ -1,0 +1,13 @@
+[Unit]
+Description=Omron 2JCIE-BU USB Sensor daemon
+After=network.target
+
+[Service]
+Type=notify
+User=omron
+Group=omron
+ExecStart=/var/lib/omron/omron_sensor.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

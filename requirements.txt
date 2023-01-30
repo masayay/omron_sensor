@@ -1,0 +1,4 @@
+###### Requirements without Version Specifiers ######
+prometheus_client
+pyserial
+sdnotify
