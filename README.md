@@ -37,8 +37,8 @@ Time measured,Temperature,Relative humidity,Ambient light,Barometric pressure,So
 2023/01/30 14:55:09,24.81,34.89,756,998.876,67.2,2,415,69.97,19.03,2,152.3,1002.0,6.708
 ~~~
 
-## Connecting with Prometheus
-Exporting sensing data to prometheus server either way via prometheus-node-exporter or pushgateway. Edit "/var/lib/omron/config.ini" then restart service.
+## Connecting with Prometheus Server
+It can be enabled to export sensing data to prometheus server either way via prometheus-node-exporter or pushgateway. Edit "/var/lib/omron/config.ini" then restart service.
 ~~~
 [PROMETHEUS]
 # prometheus-node-exporter configuration
