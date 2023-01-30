@@ -8,7 +8,7 @@ git clone https://github.com/masayay/omron_sensor.git
 cd omron_sensor
 sudo bash install.sh
 ~~~
-Make sure connected 2JCIE-BU01 on Raspberry Pi USB correctly then reboot
+Connect 2JCIE-BU01 on Raspberry Pi USB port correctly then reboot
 ~~~
 reboot
 ~~~
