@@ -6,8 +6,7 @@ Omron 2JCIE-BU Daemon for Raspberry Pi.
 apt -y install git
 git clone https://github.com/masayay/omron_sensor.git
 cd omron_sensor
-chmod 755 install.sh
-sudo ./install.sh
+bash install.sh
 ~~~
 Make sure connected 2JCIE-BU01 on Raspberry Pi USB correctly then reboot
 ~~~
@@ -25,12 +24,6 @@ tail /var/log/omron/`hostname`-sensor.log
 ~~~
 systemctl start omron-sensor
 systemctl stop omron-sensor
-~~~
-
-Make sure "ttyUSB0" user group 
-~~~
-ls -l /dev/ttyUSB0
-grep dialout /etc/group
 ~~~
 
 ## Connecting with Prometheus
@@ -53,4 +46,7 @@ PUSHGATEWAY = X.X.X.X:9091
 PUSHGATEWAY_TIMEOUT = 1
 ~~~
 
-
+## Remove
+~~~
+bash install.sh remove
+~~~

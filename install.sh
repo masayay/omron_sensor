@@ -3,6 +3,17 @@
 INSTALL_DIR=/var/lib/omron
 LOG_DIR=/var/log/omron
 
+if [ $1 = "remove" ]; then
+    rm -f /etc/udev/rules.d/80-2jcie-bu01-usb.rules
+    rm -f /etc/logrotate.d/omron
+    systemctl stop omron-sensor
+    systemctl disable omron-sensor
+    rm -f /etc/systemd/system/omron-sensor.service
+    systemctl daemon-reload
+    echo "Removed omron-sensor.service"
+    exit 0
+fi
+
 ## Step1: Install required packages
 apt -y install python3
 apt -y install pip
@@ -47,3 +58,5 @@ cat<<EOF> /etc/logrotate.d/omron
 	copytruncate
 }
 EOF
+
+echo "Installed omron-sensor.service"
