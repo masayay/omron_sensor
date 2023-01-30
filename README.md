@@ -1,5 +1,7 @@
-# Omron Sensor Daemon
-Omron 2JCIE-BU Daemon for Raspberry Pi.
+# OMRON 2JCIE-BU Systemd Service
+* Reading sensing data from serial communication (USB port) and writing data on csv file.
+* Export sensing data to prometheus-node-exporter/pushgateway.
+* Register as systemd service
 
 ## Install
 ~~~
@@ -8,7 +10,7 @@ git clone https://github.com/masayay/omron_sensor.git
 cd omron_sensor
 sudo bash install.sh
 ~~~
-Connect 2JCIE-BU01 on Raspberry Pi USB port correctly then reboot
+**Connect 2JCIE-BU on USB port correctly then reboot**
 ~~~
 reboot
 ~~~
@@ -57,5 +59,17 @@ PUSHGATEWAY_TIMEOUT = 1
 
 ## Remove
 ~~~
+cd omron_sensor
 bash install.sh remove
+~~~
+
+## Troubleshooting
+Source was tested on "Raspberry Pi 4 Model B (Debian version 11 installed). User "omron" need to access 2JCIE-BU serial port "/dev/ttyUSBX". Check "group" of serial port and add user "omron" to that group.
+~~~
+1) Check group
+ls -l /dev/ttyUSB0 |awk '{print $4}'
+##GROUP_NAME##
+
+2) Add omron on group
+gpasswd -a omron ##GROUP_NAME##
 ~~~
