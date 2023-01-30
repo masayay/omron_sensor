@@ -27,7 +27,7 @@ tail -f /var/lib/omron/data/`hostname`-sensor.csv
 tail -f /var/log/omron/`hostname`-sensor.log
 ~~~
 
-### CSV output sample
+#### CSV output sample
 ~~~
 Time measured,Temperature,Relative humidity,Ambient light,Barometric pressure,Sound noise,eTVOC,eCO2,Discomfort index,Heat stroke,Vibration information,SI value,PGA,Seismic intensity
 2023/01/30 14:55:06,24.92,34.69,572,998.887,67.68,3,420,70.08,19.1,2,152.3,1002.0,6.708
@@ -36,7 +36,7 @@ Time measured,Temperature,Relative humidity,Ambient light,Barometric pressure,So
 2023/01/30 14:55:09,24.81,34.89,756,998.876,67.2,2,415,69.97,19.03,2,152.3,1002.0,6.708
 ~~~
 
-## Connecting with Prometheus Server
+## Connecting with Prometheus
 It can be enabled to export sensing data to prometheus server either way via prometheus-node-exporter or pushgateway. Edit "/var/lib/omron/config.ini" then restart service.
 ~~~
 [PROMETHEUS]
@@ -50,9 +50,6 @@ PUSHGATEWAY = X.X.X.X:9091
 PUSHGATEWAY_TIMEOUT = 1
 ~~~
 
-### Sample
-![sample01](https://user-images.githubusercontent.com/92005636/215615971-e08053c2-23bc-405f-a6b3-5746d306e678.jpg)
-
 ### Install prometheus-node-exporter
 If using prometheus-node-exporter, need to install service and configure it.
 ~~~
@@ -61,7 +58,12 @@ sed -i 's/ARGS=""/ARGS="--collector.textfile.directory \/var\/lib\/omron\/prom\/
 systemctl restart prometheus-node-exporter
 ~~~
 
-## Remove
+### Grafana + Prometheus Demo
+After installing **prometheus**, **grafana-server** and configure it promptly, you can show sensing data.
+![sample01](https://user-images.githubusercontent.com/92005636/215615971-e08053c2-23bc-405f-a6b3-5746d306e678.jpg)
+
+
+## Remove Service
 ~~~
 cd omron_sensor
 bash install.sh remove
