@@ -1,4 +1,4 @@
-# OMRON 2JCIE-BU sensing data to Prometheus
+# OMRON 2JCIE-BU Sensor Daemon
 * Reading sensing data from serial communication (USB port) and writing data on csv file.
 * Export sensing data to prometheus-node-exporter/pushgateway.
 
@@ -21,7 +21,7 @@ systemctl start omron-sensor
 systemctl stop omron-sensor
 ~~~
 
-### Check CSV data & log
+### Check CSV & log
 ~~~
 tail -f /var/lib/omron/data/`hostname`-sensor.csv
 tail -f /var/log/omron/`hostname`-sensor.log
