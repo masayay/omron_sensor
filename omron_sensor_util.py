@@ -1,6 +1,55 @@
 import os, csv
 from datetime import datetime
 from prometheus_client import CollectorRegistry, Gauge
+import configparser
+from socket import gethostname
+from logging import getLogger, FileHandler, Formatter
+    
+"""
+Load config.ini
+"""
+class Config():
+    def __init__(self):
+        config = configparser.ConfigParser()
+        config_path = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(config_path, 'config.ini')
+        config.read(config_path, 'UTF-8')
+        
+        self.HOSTNAME = gethostname()
+        # Base
+        self.LOG_LEVEL = config["BASE"]["LOG_LEVEL"]
+        self.LOG_DIR = config["BASE"]["LOG_DIR"]
+        self.ENABLE_CSV = config.getboolean("BASE","ENABLE_CSV")
+        self.CSV_DIR = config["BASE"]["CSV_DIR"]
+        # Sensor
+        self.SERIAL_PORT = config["SENSOR"]["SERIAL_PORT"]
+        self.BAUD_RATE = config.getint("SENSOR", "BAUD_RATE")
+        self.SCAN_PERIOD = config.getfloat("SENSOR", "SCAN_PERIOD")
+        self.WRITE_WAIT = config.getfloat("SENSOR","WRITE_WAIT")
+        # Prometheus
+        self.ENABLE_NODEEXPORTER = config.getboolean("PROMETHEUS","ENABLE_NODEEXPORTER")
+        self.NODE_OUTPUT_DIR = config["PROMETHEUS"]["NODE_OUTPUT_DIR"]
+        self.ENABLE_PUSHGATEWAY= config.getboolean("PROMETHEUS","ENABLE_PUSHGATEWAY")
+        self.PUSHGATEWAY = config["PROMETHEUS"]["PUSHGATEWAY"]
+        self.PUSHGATEWAY_TIMEOUT = config.getfloat("PROMETHEUS","PUSHGATEWAY_TIMEOUT")
+        # gRPC
+        self.ENABLE_gRPC = config.getboolean("gRPC","ENABLE_gRPC")
+        self.gRPC_SERVER = config["gRPC"]["gRPC_SERVER"]
+        self.gRPC_TIMEOUT = config.getfloat("gRPC","gRPC_TIMEOUT")
+        self.gRPC_STREAM = config.getboolean("gRPC","gRPC_STREAM")
+        # Create filename
+        self.LOG_FILE = self.LOG_DIR + self.HOSTNAME + "-sensor.log"
+        self.CSV_FILE = self.CSV_DIR + self.HOSTNAME + "-sensor.csv"
+        self.PROM_FILE = self.NODE_OUTPUT_DIR + self.HOSTNAME + ".prom"
+
+    def setLogger(self, name):
+        logger = getLogger(name)
+        logger.setLevel(self.LOG_LEVEL)
+        if not logger.hasHandlers():
+            handler = FileHandler(filename=self.LOG_FILE)
+            handler.setFormatter(Formatter("%(asctime)s %(levelname)6s %(message)s"))
+            logger.addHandler(handler)
+        return logger
 
 """
 CSV File

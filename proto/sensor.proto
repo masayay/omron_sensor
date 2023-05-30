@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package sensor;
+option go_package = "./sensor";
+
+service sensor {
+ rpc pushValue(sensorValue) returns(Null);
+ rpc pushValues(stream sensorValue) returns(Null);
+}
+
+message Null {}
+
+message sensorValue {
+  string HostName =1;
+  double Temperature = 2;
+  double RelativeHumidity =3;
+  double AmbientLight=4;
+  double BarometricPressure=5;
+  double SoundNoise=6;
+  double ETVOC=7;
+  double ECO2=8;
+  double DiscomfortIndex=9;
+  double HeatStroke=10;
+  double VibrationInformation=11;
+  double SiValue=12;
+  double Pga=13;
+  double SeismicIntensity=14;
+  int64 UnixTimeMillisecond=15;
+}

@@ -30,7 +30,8 @@ useradd -g omron -s /usr/sbin/nologin -d ${INSTALL_DIR} -r omron
 gpasswd -a omron dialout  ## Require to access /dev/ttyUSBX
 
 # Step4: Install pkg
-cp omron_sensor.py omron_sensor_util.py ${INSTALL_DIR}
+cp omron_sensor.py omron_sensor_util.py grpc_client.py ${INSTALL_DIR}
+cp -r proto ${INSTALL_DIR}/
 cp config-sample.ini ${INSTALL_DIR}/config.ini
 chmod 754 ${INSTALL_DIR}/omron_sensor.py
 chown -R omron:omron ${INSTALL_DIR} ${LOG_DIR}
