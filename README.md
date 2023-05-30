@@ -41,11 +41,11 @@ It can be enabled to export sensing data to prometheus server either way via pro
 ~~~
 [PROMETHEUS]
 # prometheus-node-exporter configuration
-ENABLE_NODEEXPORTER = False
+ENABLE_NODEEXPORTER = True
 NODE_OUTPUT_DIR = /var/lib/omron/prom/
 
 # pushgateway configuration
-ENABLE_PUSHGATEWAY = False
+ENABLE_PUSHGATEWAY = True
 PUSHGATEWAY = X.X.X.X:9091
 PUSHGATEWAY_TIMEOUT = 1
 ~~~
